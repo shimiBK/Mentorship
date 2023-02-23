@@ -8,7 +8,7 @@ const app = express();
 
 
 const corsOptions = {
-  origin: ["http://localhost:3000", "https://livecody.onrender.com","https://code4moveo.onrender.com"],
+  origin: ["http://localhost:3000", "https://mentorship-api.onrender.com"]
 }
 
 
