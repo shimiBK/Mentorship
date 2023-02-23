@@ -1,7 +1,7 @@
 const { Server } = require("socket.io");
 
 const corsOptions = {
-    origin: ["http://localhost:3000", "https://mentorship-api.onrender.com"]
+    origin: ["http://localhost:3000", "https://mentorship-y5pa.onrender.com"]
   }
 
 
