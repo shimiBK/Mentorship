@@ -1,13 +1,13 @@
 const { Server } = require("socket.io");
 
 const corsOptions = {
-    origin: ["http://localhost:3000", "https://livecody.onrender.com","https://code4moveo.onrender.com"],
+    origin: ["http://localhost:3000", "https://mentorship-api.onrender.com"]
   }
 
 
 const io = new Server({
     cors: {
-      origin: "http://localhost:3000",
+      corsOptions,
       methods: ["GET", "POST"],
     },
   });
