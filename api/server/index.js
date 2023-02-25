@@ -28,7 +28,7 @@ app.use(
   );
   
   app.use("/api/codeblocks" , codeblockRoute);
-
+  app.use("/api/codeblocks/:id", codeblockRoute);
 
   app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;

@@ -1,5 +1,6 @@
 const { Server } = require("socket.io");
 
+
 const corsOptions = {
     origin: ["http://localhost:3000", "https://mentorship-y5pa.onrender.com"]
   }
@@ -14,9 +15,9 @@ const io = new Server({
 
   let mentors = {}
 
-  io.on("connection", (socket) => {
+  io.on("connection",  (socket) => {
 
-    socket.on("join_room", (data) => {
+    socket.on("join_codeblock", (data) => {
       socket.join(data);
       //check if someone already entered the codeblock room
       if(!mentors[data]){
@@ -26,21 +27,19 @@ const io = new Server({
       else{
         socket.emit("role","student")
       }
-  
-      
-      socket.on('disconnect', () => {
-        console.log(`user ${socket.id} disconnected`);
+          
+      socket.on('disconnect', async () => {
+
         if (socket === mentors[data]) {
           mentors[data] = null;
         }
       });
   
-  
     });
     
     //on codeChange emit the change to everyone in that room
-    socket.on("send_message", (data) => {
-      socket.to(data.room).emit("receive_message", data);
+    socket.on("send_code", (data) => {
+      socket.to(data.id).emit("receive_code", data);
     });
   
   });

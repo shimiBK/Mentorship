@@ -1,18 +1,16 @@
-import React from 'react'
 import "./codeblock.css"
 import { useEffect, useState , useReducer ,useContext } from "react";
-import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { ACTION_TYPES } from "../../reducer/codeblockActionTypes";
 import { INITIAL_STATE, codeblockReducer } from "../../reducer/codeblockReducer";
 import {URL} from "../../App"
-import roleContext from "../../context/roleContext";
 import socketContext from "../../context/socketContext";
-import roomContext from "../../context/roomContext";
 import Loading from '../../components/Loading';
 import axios from 'axios';
 import CodeMirrorEditor from '../../components/CodeMirrorEditor';
 import ScreenFireworks from '../../components/ScreenFireworks';
+import { checkSolution } from "../../utils/utils";
+
 
 
 
@@ -21,64 +19,50 @@ const CodeBlock = () => {
 
     const [state, dispatch] = useReducer(codeblockReducer, INITIAL_STATE);
     const [isTrue,setIsTrue] = useState(false);
-    const {codeblock , loading , CodeReceived} = state;
-    const {role} = useContext(roleContext);
+    const [role,setRole] = useState("");
+    const {codeblock , loading , codeReceived } = state;
     const {socket} = useContext(socketContext);
-    const {room} = useContext(roomContext);
     const { id } = useParams();
-    const history = useHistory();
 
-    const onChange = (value) =>{
-        const newVal = value;
-        dispatch({ type: ACTION_TYPES.UPDATE_CODE, payload: newVal });
-        sendToMentor(value);
+
+
+    const sendMessageToRoom = (studentCode) =>{
+        const codeOfStudent = studentCode;
+        socket.emit("send_code", { id , codeOfStudent } ); // send the student's code to the codeblock room
+        //check if the student's code equals to the solution.
+        setIsTrue(checkSolution(codeOfStudent,codeblock.solution));
     }
 
+
+    const onChange = (studentCode) =>{
+
+        dispatch({ type: ACTION_TYPES.UPDATE_CODE, payload: studentCode });
+        sendMessageToRoom(studentCode);
+
+    }
 
     
-    const sendToMentor = (value) =>{
-        const code = value;
-        socket.emit("send_message", { room , code} ); // send the student's code to the codeblock room
-        //check if the student's code equals to the solution.
-        checkSolution(code);
 
-    }
-
-    const checkSolution = (code) =>{
-      
-              if(code.trim() === state.codeblock.solution.trim()){
-            setIsTrue(true);
-        }
-
-    }
-
+ 
 
     useEffect(() => {
       if(socket){
-
-        const socketSubscription = socket.on("receive_message", (message) => {
-        dispatch({ type: ACTION_TYPES.UPDATE_CODE, payload: message.code }); 
+        socket.on("receive_code", (code) => {
+        dispatch({ type: ACTION_TYPES.UPDATE_CODE, payload: code.codeOfStudent }); 
       });
 
-      return () => {
-        socketSubscription.off("receive_message");
-      };
     }
-
-      else{
-        history.push('/');
-      }
-    }, [socket,history]);
+    },[socket]);
     
     
     useEffect(()=> {
- 
+
         const getCodeblock = async () =>{
-            
             dispatch({ type: ACTION_TYPES.FETCH_START});
             try {
                 const res = await axios.get(`${URL}/api/codeblocks/${id}`);
                 dispatch({ type: ACTION_TYPES.FETCH_SUCCESS, payload: res.data })
+                
             } catch (error) {
                 dispatch({ type: ACTION_TYPES.FETCH_ERROR });
             }
@@ -89,6 +73,26 @@ const CodeBlock = () => {
     },[id])
 
 
+    useEffect(()=>{
+           if (id  && socket) {
+            socket.emit("join_codeblock", id );            
+            socket.on("role", (newRole) => {
+                setRole(newRole);
+            });
+        }
+
+        return () => {
+
+            if (socket) {
+              socket.off("receive_code");
+              socket.off("role");
+            }
+        }
+
+    },[id,socket])
+    
+
+
     const renderContent = (
         <div className="contentContainer">
             <h1 className="cBlockTitle">{codeblock.title}</h1>
@@ -97,13 +101,13 @@ const CodeBlock = () => {
             {role==="student" && 
             <div className="editCodeContainer">
               <div className="editorFrame">
-              <CodeMirrorEditor onChange={onChange} />
+              <CodeMirrorEditor value={codeReceived} onChange={onChange} />
               </div>
             </div>}
             {role==="mentor" && 
             <div className="editCodeContainer">
                 <div className="editorFrame">
-                <CodeMirrorEditor value={CodeReceived} onChange={onChange} readOnly/>
+                <CodeMirrorEditor value={codeReceived} onChange={onChange} readOnly/>
                   </div>
              </div>}
             {isTrue && 

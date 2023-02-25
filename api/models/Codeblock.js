@@ -5,7 +5,7 @@ const CodeblockSchema = new mongoose.Schema({
     id:{type:Number},
     title:{type:String},
     code:{type:String},
-    solution:{type:String}
+    solution:{type:String},
 });
 
 

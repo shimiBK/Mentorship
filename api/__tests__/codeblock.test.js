@@ -5,7 +5,7 @@ const app = require("../server");
 
 describe('Codeblock Test', () =>{
 
-it('GET /codeblock/:id ---> get specific block', async () =>{
+it('GET /codeblocks/:id ---> get specific block', async () =>{
     return request(app).get('/api/codeblocks/1')
     .expect('Content-Type', /json/)
     .expect(200)

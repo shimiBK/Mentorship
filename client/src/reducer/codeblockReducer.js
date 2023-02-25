@@ -3,7 +3,7 @@ import { ACTION_TYPES } from "./codeblockActionTypes";
 export const INITIAL_STATE = {
     loading: false,
     codeblock:'',
-    CodeReceived:'',
+    codeReceived:'',
     error: false,
   };
 
@@ -14,28 +14,28 @@ export const INITIAL_STATE = {
                 loading:true,
                 error:false,
                 codeblock:'',
-                CodeReceived:'',
+                codeReceived:'',
             }
             case ACTION_TYPES.FETCH_SUCCESS:
                 return {
                     ...state,
                     loading:false,
                     codeblock:action.payload,
-                    CodeReceived:'',
+                    codeReceived:'',
                 }
                 case ACTION_TYPES.FETCH_ERROR:
                     return {
                         error:true,
                         loading:false,
                         codeblock: '',
-                        CodeReceived:'',
+                        codeReceived:'',
                     }
                 case ACTION_TYPES.UPDATE_CODE:
                     return {
                             ...state,
-                            CodeReceived:action.payload
-                        }
-
+                            codeReceived:action.payload
+                        }  
+                              
             default:
                 return state;
     }

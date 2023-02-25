@@ -20,7 +20,6 @@ const getCodeblocks = async (req,res,next) =>{
 const getCodeblock = async (req,res,next) =>{
     try {
         const codeblock = await CodeBlock.findOne({id:req.params.id});
-
         res.status(200).json(codeblock);
         
     } catch (error) {
@@ -28,6 +27,9 @@ const getCodeblock = async (req,res,next) =>{
         
     }
 }
+
+
+  
 
 
 module.exports = {getCodeblocks,getCodeblock};
