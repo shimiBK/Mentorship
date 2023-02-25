@@ -41,7 +41,6 @@ const CodeBlock = () => {
 
     }
 
-    
 
  
 
@@ -60,7 +59,7 @@ const CodeBlock = () => {
         const getCodeblock = async () =>{
             dispatch({ type: ACTION_TYPES.FETCH_START});
             try {
-                const res = await axios.get(`https://mentorship-api.onrender.com/api/codeblocks/${id}`);
+                const res = await axios.get(`${URL}/api/codeblocks/${id}`);
                 dispatch({ type: ACTION_TYPES.FETCH_SUCCESS, payload: res.data })
                 
             } catch (error) {

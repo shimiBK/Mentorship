@@ -1,6 +1,6 @@
 import "./lobby.css";
 import React, { useEffect, useReducer } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { ACTION_TYPES } from "../../reducer/codeblockActionTypes";
 import { INITIAL_STATE, codeBlocksReducer } from "../../reducer/codeblocksReducer";
@@ -12,12 +12,12 @@ import { URL } from "../../App";
 const Lobby = () => {
 
     const [state, dispatch] = useReducer(codeBlocksReducer, INITIAL_STATE);
+    const navigate = useNavigate();
 
-    const history = useHistory();
 
     const handleClick = async (codeBlockId) =>{
 
-            history.push(`/codeblocks/${codeBlockId}`);
+            navigate(`/codeblocks/${codeBlockId}`);
         }
 
 

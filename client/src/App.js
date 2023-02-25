@@ -1,8 +1,8 @@
-import { Route,Switch } from "react-router-dom";
 import "./App.css";
 import Lobby from "./pages/lobby/Lobby";
 import io from "socket.io-client";
 import CodeBlock from "./pages/codeblock/CodeBlock";
+import { Routes, Route, } from "react-router-dom";
 import { useEffect, useState } from "react";
 import socketContext from "./context/socketContext";
 
@@ -20,14 +20,10 @@ function App() {
   return (
     <div className="App">
       <socketContext.Provider value={{ socket }}>
-            <Switch>
-            <Route path="/" exact>
-              <Lobby />
-            </Route>
-            <Route exact path="/codeblocks/:id" >
-              <CodeBlock/> 
-            </Route>
-            </Switch>
+              <Routes>
+                <Route path="/" exact element={<Lobby/>}/>
+                <Route path="/codeblocks/:id" element={<CodeBlock/>}/>
+              </Routes>
       </socketContext.Provider>
     </div>
   );
