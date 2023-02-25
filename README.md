@@ -5,6 +5,12 @@ Cody
 an online coding web application that allows a mentor to share and observe a code block in real-time with a student.
 built with Mongo, Express, React and Node.js.
 
+Features:
+
+* The first user to enter a codeblock is the mentor, and subsequent users are students.
+* The mentor can only read the code, not edit it.
+* When a student enters the correct solution, fireworks will appear on their screen.
+
 DEMO:
 
 https://mentorship-y5pa.onrender.com/
