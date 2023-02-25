@@ -7,15 +7,14 @@ built with Mongo, Express, React and Node.js.
 
 DEMO:
 
-https://livecody.onrender.com/
-
+https://mentorship-y5pa.onrender.com/
 
 
 ## Project Screen Shot(s)
  
 <div align="center">
 
-![](./readme/Cody.gif)
+![](./readme/Mentorship.gif)
 <br/>
 <br/>
 <br/>
