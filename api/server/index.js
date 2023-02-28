@@ -29,6 +29,11 @@ app.use(
   
   app.use("/api/codeblocks" , codeblockRoute);
 
+
+
+
+
+
   app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;
     const errorMessage = err.message || "Something went wrong!";
@@ -39,5 +44,15 @@ app.use(
       stack: err.stack,
     });
   });
+
+    /*----------------------PRODUCTION------------------------*/
+
+
+  app.use(express.static(path.join(__dirname, 'build')));
+
+  app.get('/*', function(req,res) {
+        res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    });
+
 
   module.exports = app;
